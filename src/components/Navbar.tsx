@@ -32,7 +32,7 @@ export default function Navbar() {
                           className={` ${
                             index === 0 &&
                             "border-b-2 border-b-black border-opacity-70"
-                          } text-[15.5px] font-semibold py-3 px-1 mx-3 cursor-pointer capitalize text-gray-500`}
+                          } hover:text-gray-700 capitalize text-[15.5px] font-semibold py-3 px-1 mx-3 cursor-pointer capitalize text-gray-500`}
                           onClick={() => {}}
                         >
                           {e}
@@ -71,21 +71,27 @@ export default function Navbar() {
                   >
                     Add Guests
                   </a>
-                  <a className="bg-primary h-8 w-8 rounded-full justify-center flex items-center text-white ">
+                  <a
+                    onClick={() => {
+                      setopen("place");
+                      setactive("place");
+                    }}
+                    className="bg-primary cursor-pointer h-8 w-8 rounded-full justify-center flex items-center text-white "
+                  >
                     <Search size={16} />
                   </a>
                 </div>
               )}
             </div>
             <div className="flex items-center">
-              <a className="text-sm capitalize hover:bg-gray-50 rounded-md py-[6px] px-3 font-bold text-gray-600">
+              <a className="text-sm cursor-pointer capitalize hover:bg-gray-50 rounded-md py-[6px] px-3 font-bold text-gray-600">
                 become a host
               </a>
-              <a className="text-gray-600 p-2 mx-1 rounded-full hover:bg-gray-50 cursor-pointer ">
+              <a className="text-gray-600 p-2 mx-2 rounded-full hover:bg-gray-50 cursor-pointer ">
                 <Globe size={16} />
               </a>
               <div>
-                <a className="flex px-3 py-[8px] hover:shadow-md rounded-full border items-center border-gray-100 ">
+                <a className="flex px-3 py-[8px] cursor-pointer hover:shadow-md rounded-full border items-center border-gray-100 ">
                   <Menu size={16} className="text-gray-600" />
                   <svg
                     className="ml-3 fill-gray-500 "
@@ -166,8 +172,8 @@ export default function Navbar() {
         <div className="">
           <div
             className={`border-b ${
-              open && "max-w-4xl mx-auto"
-            } py-2 relative border-gray-100`}
+              open && "max-w-4xl mx-auto py-2"
+            } relative border-gray-100`}
           >
             <div className="flex items-center justify-between max-w-6xl mx-auto ">
               {[
@@ -232,7 +238,7 @@ export default function Navbar() {
                 );
               })}
               <div className="mx-4">
-                <a className="border flex items-center border-gray-200 px-4 py-3 rounded-md">
+                <a className="border cursor-pointer flex items-center border-gray-200 px-4 py-3 rounded-md">
                   <svg
                     className="text-gray-500"
                     viewBox="0 0 16 16"
@@ -255,86 +261,95 @@ export default function Navbar() {
                 </a>
               </div>
             </div>
-            {open && <StaysFilter active={active} setactive={setactive} />}
+            {open && (
+              <StaysFilter
+                active={active}
+                setactive={(e: any) => {
+                  if (e === active) {
+                    setactive(undefined);
+                    setopen(undefined);
+                  } else {
+                    setactive(e);
+                  }
+                }}
+              />
+            )}
 
             {open && (
-              <div
-                onClick={() => {
-                  // setactive(undefined);
-                  // setopen(undefined);
-                }}
-                className="absolute w-full z-[10002] mx-auto top-[100px]"
-              >
-                <div className="max-w-4xl mx-auto ">
-                  {active === "place" && (
-                    <div className="py-5 px-6 max-w-md bg-white shadow-2xl rounded-3xl border border-gray-200  ">
-                      <div>
-                        <h4 className="font-bold text-gray-800 pt-3 pb-7 text-sm">
-                          Search by region
-                        </h4>
-                        <div className="grid pb-3 gap-4 grid-cols-3">
-                          {[
-                            {
-                              type: "I'am flexible",
-                              image:
-                                "https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg",
-                            },
-                            {
-                              type: "Europe",
-                              image:
-                                "https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg?im_w=320",
-                            },
-                            {
-                              type: "France",
-                              image:
-                                "https://a0.muscache.com/im/pictures/f0ece7c0-d9b2-49d5-bb83-64173d29cbe3.jpg?im_w=320",
-                            },
-                            {
-                              type: "United states",
-                              image:
-                                "https://a0.muscache.com/im/pictures/4e762891-75a3-4fe1-b73a-cd7e673ba915.jpg?im_w=320",
-                            },
-                            {
-                              type: "Canada",
-                              image:
-                                "https://a0.muscache.com/im/pictures/cd9f2bf0-eefc-4980-b7cb-9c8ca3dae883.jpg?im_w=320",
-                            },
-                            {
-                              type: "Middle east",
-                              image:
-                                "https://a0.muscache.com/im/pictures/66355b01-4695-4db9-b292-c149c46fb1ca.jpg?im_w=320",
-                            },
-                          ].map((e) => {
-                            return (
-                              <div>
-                                <div className="border cursor-pointer hover:border-gray-400 border-gray-200 rounded-md overflow-hidden">
-                                  <img src={e.image} alt="" />
-                                </div>
-                                <span className="text-sm font-semibold text-gray-500">
-                                  {" "}
-                                  {e.type}
-                                </span>
+              <Fragment>
+                {active === "place" && (
+                  <div className="py-5 absolute top-[90px] z-[10001] mr-auto px-6 max-w-md bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                    <div>
+                      <h4 className="font-bold text-gray-800 pt-3 pb-7 text-sm">
+                        Search by region
+                      </h4>
+                      <div className="grid pb-3 gap-4 grid-cols-3">
+                        {[
+                          {
+                            type: "I'am flexible",
+                            image:
+                              "https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg",
+                          },
+                          {
+                            type: "Europe",
+                            image:
+                              "https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg?im_w=320",
+                          },
+                          {
+                            type: "France",
+                            image:
+                              "https://a0.muscache.com/im/pictures/f0ece7c0-d9b2-49d5-bb83-64173d29cbe3.jpg?im_w=320",
+                          },
+                          {
+                            type: "United states",
+                            image:
+                              "https://a0.muscache.com/im/pictures/4e762891-75a3-4fe1-b73a-cd7e673ba915.jpg?im_w=320",
+                          },
+                          {
+                            type: "Canada",
+                            image:
+                              "https://a0.muscache.com/im/pictures/cd9f2bf0-eefc-4980-b7cb-9c8ca3dae883.jpg?im_w=320",
+                          },
+                          {
+                            type: "Middle east",
+                            image:
+                              "https://a0.muscache.com/im/pictures/66355b01-4695-4db9-b292-c149c46fb1ca.jpg?im_w=320",
+                          },
+                        ].map((e) => {
+                          return (
+                            <div>
+                              <div
+                                onClick={() => {
+                                  setactive("date-in");
+                                }}
+                                className="border cursor-pointer hover:border-gray-400 border-gray-200 rounded-md overflow-hidden"
+                              >
+                                <img src={e.image} alt="" />
                               </div>
-                            );
-                          })}
-                        </div>
+                              <span className="text-sm font-semibold text-gray-500">
+                                {" "}
+                                {e.type}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {active === "guests" && (
-                    <div className="py-5 ml-auto px-6 max-w-md bg-white shadow-2xl rounded-3xl border border-gray-200  ">
-                      <GuestsForm />
-                    </div>
-                  )}
+                {active === "guests" && (
+                  <div className="py-5 right-0 absolute top-[90px] z-[10001] ml-auto px-6 max-w-lg bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                    <GuestsForm />
+                  </div>
+                )}
 
-                  {(active === "date-in" || active === "date-out") && (
-                    <div className="py-5 mx-auto px-6 max-w-4xl bg-white shadow-2xl rounded-3xl border border-gray-200  ">
-                      <DatesForm />
-                    </div>
-                  )}
-                </div>
-              </div>
+                {(active === "date-in" || active === "date-out") && (
+                  <div className="py-5 absolute top-[90px] z-[10001]  w-full mx-auto px-6 max-w-4xl bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                    <DatesForm />
+                  </div>
+                )}
+              </Fragment>
             )}
           </div>
         </div>
@@ -377,7 +392,7 @@ function StaysFilter({ active, setactive }: any) {
           >
             <h4 className="text-[13px] cursor-pointer font-bold">Where </h4>
             <input
-              className="text-[13px] outline-none bg-transparent font-semibold"
+              className="text-[13px] placeholder:text-gray-500 text-gray-500  outline-none bg-transparent font-semibold"
               type="text"
               placeholder="Search destinations"
               name=""
@@ -440,7 +455,7 @@ function StaysFilter({ active, setactive }: any) {
               Add Guests
             </span>
 
-            <a className="bg-primary top-3 flex items-center justify-center absolute right-3 z-[100] h-11 w-11 rounded-full ">
+            <a className="bg-primary top-3 cursor-pointer flex items-center justify-center absolute right-3 z-[100] h-11 w-11 rounded-full ">
               <Search size={16} className="text-white" />
             </a>
           </div>
@@ -469,7 +484,7 @@ function GuestsForm() {
               </span>
             </div>
             <div>
-              <div className="flex items-center">
+              <div className="flex ml-10 items-center">
                 <a className="h-8 w-8 justify-center border border-gray-200 rounded-full flex items-center">
                   <Minus size={15} />
                 </a>
@@ -490,6 +505,8 @@ function GuestsForm() {
 
 function DatesForm() {
   const [type, settype] = useState("flex");
+
+  const [stay, setstay] = useState("weekend");
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -519,9 +536,18 @@ function DatesForm() {
           <div className="flex items-center justify-center flex-col">
             <h4 className="text-base mt-5 mb-2 font-bold ">Stay for a week</h4>
             <div className="flex items-center justify-center">
-              {["weekend", "week", "month"].map((e) => {
+              {["weekend", "week", "month"].map((e, index) => {
                 return (
-                  <a className="cursor-pointer text-sm my-3 mx-1 font-semibold border border-gray-100 rounded-full text-gray-500 px-5 py-2">
+                  <a
+                    onClick={() => {
+                      setstay(e);
+                    }}
+                    className={`${
+                      e === stay
+                        ? "border-gray-400 text-gray-700 "
+                        : "border-gray-200 text-gray-500 "
+                    } cursor-pointer text-sm my-3 mx-1 font-semibold border rounded-full px-5 py-2`}
+                  >
                     {e}
                   </a>
                 );
@@ -540,13 +566,13 @@ function DatesForm() {
                 "febuary",
               ].map((e) => {
                 return (
-                  <div className="flex border p-3 rounded-md border-gray-200 items-center justify-center flex-col">
-                    <Calendar className="text-gray-600" />
+                  <div className="flex border p-4 hover:bg-gray-100 cursor-pointer rounded-md border-gray-200 items-center justify-center flex-col">
+                    <Calendar className="text-gray-500" />
                     <div className="flex mt-3 flex-col justify-center items-center">
-                      <h4 className="text-sm text-gray-700 capitalize font-bold">
+                      <h4 className="text-[13px] text-gray-700 capitalize font-bold">
                         {e}
                       </h4>
-                      <p className="text-sm mt-2 font-semibold text-gray-400 ">
+                      <p className="text-[13px] mt-2 font-semibold text-gray-400 ">
                         2022
                       </p>
                     </div>
