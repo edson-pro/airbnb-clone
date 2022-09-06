@@ -1,8 +1,11 @@
 import { Fragment, useState } from "react";
-import { Globe, Menu, Search } from "react-feather";
+import { Calendar, Globe, Menu, Minus, Plus, Search } from "react-feather";
 
 export default function Navbar() {
   const [open, setopen] = useState<any>();
+
+  const [active, setactive] = useState<any>("");
+
   return (
     <Fragment>
       <div className="fixed w-full bg-white z-[1001]">
@@ -43,6 +46,7 @@ export default function Navbar() {
                   <a
                     onClick={() => {
                       setopen("places");
+                      setactive("place");
                     }}
                     className="px-3 border-r mx-3 cursor-pointer border-gray-200 text-sm font-semibold text-gray-600"
                   >
@@ -52,6 +56,7 @@ export default function Navbar() {
                   <a
                     onClick={() => {
                       setopen("time");
+                      setactive("date-in");
                     }}
                     className="px-3 border-r cursor-pointer mx-3 border-gray-200 text-sm font-semibold text-gray-600"
                   >
@@ -60,6 +65,7 @@ export default function Navbar() {
                   <a
                     onClick={() => {
                       setopen("guests");
+                      setactive("guests");
                     }}
                     className="px-3 mx-3 cursor-pointer text-sm font-semibold text-gray-400"
                   >
@@ -107,28 +113,31 @@ export default function Navbar() {
                 <div className="ml-3">
                   <h4 className="font-bold text-gray-700 text-sm">Where To?</h4>
                   <div className="flex mt-1 items-center">
-                    {["any where", "any week", "add gusts"].map(
-                      (e, index, array) => {
-                        return (
-                          <Fragment key={index}>
-                            <a
-                              className="mx-2 cup first:ml-0 flex items-center"
-                              onClick={() => {
-                                setopen(e);
-                              }}
-                            >
-                              <span className="text-[12.5px] capitalize font-semibold text-gray-600 ">
-                                {e}
-                              </span>
-                            </a>
+                    {[
+                      { name: "any where", type: "place" },
+                      { name: "any week", type: "date-in" },
+                      { name: "add guests", type: "guests" },
+                    ].map((e, index, array) => {
+                      return (
+                        <Fragment key={index}>
+                          <a
+                            className="mx-2 cup first:ml-0 flex items-center"
+                            onClick={() => {
+                              setopen(e);
+                              setactive(e.type);
+                            }}
+                          >
+                            <span className="text-[12.5px] capitalize font-semibold text-gray-600 ">
+                              {e.name}
+                            </span>
+                          </a>
 
-                            {index !== array.length - 1 && (
-                              <div className="h-[3px] w-[3px] bg-gray-300 rounded-full"></div>
-                            )}
-                          </Fragment>
-                        );
-                      }
-                    )}
+                          {index !== array.length - 1 && (
+                            <div className="h-[3px] w-[3px] bg-gray-300 rounded-full"></div>
+                          )}
+                        </Fragment>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -154,94 +163,180 @@ export default function Navbar() {
             </div>
           </Fragment>
         </div>
-        <div className="border-b py-2 relative border-gray-100">
-          <div className="flex items-center justify-between max-w-6xl mx-auto ">
-            {[
-              {
-                title: "OMG!",
-                icon: "https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg",
-              },
-              {
-                title: "Amazing pools",
-                icon: "https://a0.muscache.com/pictures/c0a24c04-ce1f-490c-833f-987613930eca.jpg",
-              },
-              {
-                title: "Amazing pools",
-                icon: "https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg",
-              },
-              {
-                title: "islands",
-                icon: "https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg",
-              },
-              {
-                title: "arctic",
-                icon: "https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg",
-              },
-              {
-                title: "tiny homes",
-                icon: "https://a0.muscache.com/pictures/35919456-df89-4024-ad50-5fcb7a472df9.jpg",
-              },
-              {
-                title: "design",
-                icon: "https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg",
-              },
-              {
-                title: "surfing",
-                icon: "https://a0.muscache.com/pictures/957f8022-dfd7-426c-99fd-77ed792f6d7a.jpg",
-              },
-              {
-                title: "cabins",
-                icon: "https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg",
-              },
-            ].map((e, index) => {
-              return (
-                <div
-                  key={index}
-                  className={`${
-                    index === 0 ? "border-b-2 border-gray-600" : " "
-                  } mx-3  py-3 flex flex-col items-center justify-center`}
-                >
-                  <img
-                    className={`h-6 w-6 mb-2 ${
-                      index === 0 ? " opacity-100" : " opacity-50"
-                    }`}
-                    src={e.icon}
-                  />
-                  <span
-                    className={`text-[13px] capitalize truncate font-semibold ${
-                      index === 0 ? "text-gray-800" : " text-gray-500"
-                    } `}
+        <div className="">
+          <div
+            className={`border-b ${
+              open && "max-w-4xl mx-auto"
+            } py-2 relative border-gray-100`}
+          >
+            <div className="flex items-center justify-between max-w-6xl mx-auto ">
+              {[
+                {
+                  title: "OMG!",
+                  icon: "https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg",
+                },
+                {
+                  title: "Amazing pools",
+                  icon: "https://a0.muscache.com/pictures/c0a24c04-ce1f-490c-833f-987613930eca.jpg",
+                },
+                {
+                  title: "Amazing pools",
+                  icon: "https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg",
+                },
+                {
+                  title: "islands",
+                  icon: "https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg",
+                },
+                {
+                  title: "arctic",
+                  icon: "https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg",
+                },
+                {
+                  title: "tiny homes",
+                  icon: "https://a0.muscache.com/pictures/35919456-df89-4024-ad50-5fcb7a472df9.jpg",
+                },
+                {
+                  title: "design",
+                  icon: "https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg",
+                },
+                {
+                  title: "surfing",
+                  icon: "https://a0.muscache.com/pictures/957f8022-dfd7-426c-99fd-77ed792f6d7a.jpg",
+                },
+                {
+                  title: "cabins",
+                  icon: "https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg",
+                },
+              ].map((e, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`${
+                      index === 0 ? "border-b-2 border-gray-600" : " "
+                    } mx-3  py-3 flex flex-col items-center justify-center`}
                   >
-                    {e.title}
+                    <img
+                      className={`h-6 w-6 mb-2 ${
+                        index === 0 ? " opacity-100" : " opacity-50"
+                      }`}
+                      src={e.icon}
+                    />
+                    <span
+                      className={`text-[13px] capitalize truncate font-semibold ${
+                        index === 0 ? "text-gray-800" : " text-gray-500"
+                      } `}
+                    >
+                      {e.title}
+                    </span>
+                  </div>
+                );
+              })}
+              <div className="mx-4">
+                <a className="border flex items-center border-gray-200 px-4 py-3 rounded-md">
+                  <svg
+                    className="text-gray-500"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    role="presentation"
+                    focusable="false"
+                    style={{
+                      display: "block",
+                      height: 14,
+                      width: 14,
+                      fill: "currentcolor",
+                    }}
+                  >
+                    <path d="M5 8c1.306 0 2.418.835 2.83 2H14v2H7.829A3.001 3.001 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.829 4H2V4h6.17A3.001 3.001 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                  </svg>
+                  <span className="text-gray-500 text-sm font-semibold ml-3">
+                    Filter
                   </span>
-                </div>
-              );
-            })}
-            <div className="mx-4">
-              <a className="border flex items-center border-gray-200 px-4 py-3 rounded-md">
-                <svg
-                  className="text-gray-500"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  role="presentation"
-                  focusable="false"
-                  style={{
-                    display: "block",
-                    height: 14,
-                    width: 14,
-                    fill: "currentcolor",
-                  }}
-                >
-                  <path d="M5 8c1.306 0 2.418.835 2.83 2H14v2H7.829A3.001 3.001 0 1 1 5 8zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6-8a3 3 0 1 1-2.829 4H2V4h6.17A3.001 3.001 0 0 1 11 2zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                </svg>
-                <span className="text-gray-500 text-sm font-semibold ml-3">
-                  Filter
-                </span>
-              </a>
+                </a>
+              </div>
             </div>
+            {open && <StaysFilter active={active} setactive={setactive} />}
+
+            {open && (
+              <div
+                onClick={() => {
+                  // setactive(undefined);
+                  // setopen(undefined);
+                }}
+                className="absolute w-full z-[10002] mx-auto top-[100px]"
+              >
+                <div className="max-w-4xl mx-auto ">
+                  {active === "place" && (
+                    <div className="py-5 px-6 max-w-md bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                      <div>
+                        <h4 className="font-bold text-gray-800 pt-3 pb-7 text-sm">
+                          Search by region
+                        </h4>
+                        <div className="grid pb-3 gap-4 grid-cols-3">
+                          {[
+                            {
+                              type: "I'am flexible",
+                              image:
+                                "https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg",
+                            },
+                            {
+                              type: "Europe",
+                              image:
+                                "https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg?im_w=320",
+                            },
+                            {
+                              type: "France",
+                              image:
+                                "https://a0.muscache.com/im/pictures/f0ece7c0-d9b2-49d5-bb83-64173d29cbe3.jpg?im_w=320",
+                            },
+                            {
+                              type: "United states",
+                              image:
+                                "https://a0.muscache.com/im/pictures/4e762891-75a3-4fe1-b73a-cd7e673ba915.jpg?im_w=320",
+                            },
+                            {
+                              type: "Canada",
+                              image:
+                                "https://a0.muscache.com/im/pictures/cd9f2bf0-eefc-4980-b7cb-9c8ca3dae883.jpg?im_w=320",
+                            },
+                            {
+                              type: "Middle east",
+                              image:
+                                "https://a0.muscache.com/im/pictures/66355b01-4695-4db9-b292-c149c46fb1ca.jpg?im_w=320",
+                            },
+                          ].map((e) => {
+                            return (
+                              <div>
+                                <div className="border cursor-pointer hover:border-gray-400 border-gray-200 rounded-md overflow-hidden">
+                                  <img src={e.image} alt="" />
+                                </div>
+                                <span className="text-sm font-semibold text-gray-500">
+                                  {" "}
+                                  {e.type}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {active === "guests" && (
+                    <div className="py-5 ml-auto px-6 max-w-md bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                      <GuestsForm />
+                    </div>
+                  )}
+
+                  {(active === "date-in" || active === "date-out") && (
+                    <div className="py-5 mx-auto px-6 max-w-4xl bg-white shadow-2xl rounded-3xl border border-gray-200  ">
+                      <DatesForm />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-          {open && <StaysFilter />}
         </div>
       </div>
 
@@ -249,6 +344,7 @@ export default function Navbar() {
         <div
           className="cursor-pointer bottom-0 left-0 fixed z-[1000] right-0 top-0"
           onClick={() => {
+            setactive(undefined);
             setopen(undefined);
           }}
           style={{ backgroundColor: "rgb(10 10 10 / 55%)" }}
@@ -258,8 +354,7 @@ export default function Navbar() {
   );
 }
 
-function StaysFilter() {
-  const [active, setactive] = useState("place");
+function StaysFilter({ active, setactive }: any) {
   return (
     <Fragment>
       <div className="absolute  h-full z-[10000] w-full top-0 left-0 bg-white">
@@ -352,5 +447,116 @@ function StaysFilter() {
         </div>
       </div>
     </Fragment>
+  );
+}
+
+function GuestsForm() {
+  const [types, settypes] = useState([
+    { name: "adults", desc: "age 13 and above", count: 0 },
+    { name: "Childrens", desc: "Ages 2–12", count: 0 },
+    { name: "Infants", desc: "Under 2", count: 0 },
+    { name: "Pets", desc: "Bringing a service animal?", count: 0 },
+  ]);
+  return (
+    <div>
+      {types.map((e) => {
+        return (
+          <div className="flex border-b last:border-b-0 border-gray-100 items-center justify-between py-4">
+            <div>
+              <h4 className="text-sm font-bold capitalize">{e.name}</h4>
+              <span className="text-sm font-semibold capitalize text-gray-400 mt-2 block">
+                {e.desc}
+              </span>
+            </div>
+            <div>
+              <div className="flex items-center">
+                <a className="h-8 w-8 justify-center border border-gray-200 rounded-full flex items-center">
+                  <Minus size={15} />
+                </a>
+                <span className="text-sm font-semibold text-gray-600 mx-3">
+                  0
+                </span>
+                <a className="h-8 w-8 justify-center border border-gray-200 rounded-full flex items-center">
+                  <Plus size={15} />
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DatesForm() {
+  const [type, settype] = useState("flex");
+  return (
+    <div>
+      <div className="flex items-center justify-center">
+        <div className="flex bg-gray-200 px-1 py-1 rounded-full items-center">
+          {[
+            { title: "Choose date", type: "fixed" },
+            { title: "I'am flexible", type: "flex" },
+          ].map((e) => {
+            return (
+              <a
+                className={`${
+                  type === e.type ? "bg-white" : ""
+                } font-bold  text-[13px] cursor-pointer rounded-full px-5 py-2`}
+                onClick={() => {
+                  settype(e.type);
+                }}
+              >
+                {e.title}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      {type === "flex" && (
+        <div className="flex items-center justify-center flex-col">
+          <div className="flex items-center justify-center flex-col">
+            <h4 className="text-base mt-5 mb-2 font-bold ">Stay for a week</h4>
+            <div className="flex items-center justify-center">
+              {["weekend", "week", "month"].map((e) => {
+                return (
+                  <a className="cursor-pointer text-sm my-3 mx-1 font-semibold border border-gray-100 rounded-full text-gray-500 px-5 py-2">
+                    {e}
+                  </a>
+                );
+              })}
+            </div>
+
+            <h4 className="text-[14px] mt-5 mb-2 font-bold ">Go any time</h4>
+
+            <div className="grid grid-cols-6 mt-4 gap-3">
+              {[
+                "september",
+                "actober",
+                "november",
+                "december",
+                "january",
+                "febuary",
+              ].map((e) => {
+                return (
+                  <div className="flex border p-3 rounded-md border-gray-200 items-center justify-center flex-col">
+                    <Calendar className="text-gray-600" />
+                    <div className="flex mt-3 flex-col justify-center items-center">
+                      <h4 className="text-sm text-gray-700 capitalize font-bold">
+                        {e}
+                      </h4>
+                      <p className="text-sm mt-2 font-semibold text-gray-400 ">
+                        2022
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
